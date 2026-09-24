@@ -1100,7 +1100,7 @@
     </footer>
 
     <!-- JS -->
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="./js/jquery-3.6.0.min.js"></script>
     <script>
       (function () {
         "use strict";
@@ -1110,6 +1110,9 @@
 
         window.__mergedCurrentCountry = currentCountry;
 
+        /* ========================================
+     更新國家 / 優惠篩選
+  ======================================== */
         function updateMergedFilters() {
           var visibleCount = 0;
 
@@ -1166,7 +1169,28 @@
           }
         }
 
-        /* 國家按鈕點擊 */
+        /* ========================================
+     更新國家按鈕 Active 狀態
+  ======================================== */
+        function setCountryActive(country) {
+          $(".country-tab, .mobile-country-filter").removeClass("active");
+
+          $(".country-tab").attr("aria-selected", "false");
+
+          $('.country-tab[data-country-filter="' + country + '"],' + '.country-tab[data-country="' + country + '"]')
+            .addClass("active")
+            .attr("aria-selected", "true");
+
+          $('.mobile-country-filter[data-country-filter="' + country + '"],' + '.mobile-country-filter[data-country="' + country + '"]').addClass("active");
+
+          if ($("select.mobile-country-filter").length) {
+            $("select.mobile-country-filter").val(country);
+          }
+        }
+
+        /* ========================================
+     國家按鈕點擊
+  ======================================== */
         $(document).on("click", ".country-tab, .mobile-country-filter", function (e) {
           e.preventDefault();
 
@@ -1174,72 +1198,130 @@
 
           if (!country) return;
 
+          /* 更新目前國家 */
           currentCountry = country;
           window.__mergedCurrentCountry = currentCountry;
 
-          $(".country-tab, .mobile-country-filter").removeClass("active");
-          $('.country-tab[data-country-filter="' + country + '"], .country-tab[data-country="' + country + '"]').addClass("active");
-          $('.mobile-country-filter[data-country-filter="' + country + '"], .mobile-country-filter[data-country="' + country + '"]').addClass("active");
+          /* 更新按鈕 */
+          setCountryActive(country);
 
-          $(".country-tab").attr("aria-selected", "false");
-          $('.country-tab[data-country-filter="' + country + '"], .country-tab[data-country="' + country + '"]').attr("aria-selected", "true");
-
-          if ($("select.mobile-country-filter").length) {
-            $("select.mobile-country-filter").val(country);
-          }
-
+          /* 更新內容 */
           updateMergedFilters();
 
-          var $targetGroup = $('.merged-country-group[data-country-group="' + country + '"]');
-          if ($targetGroup.length) {
-            var menuHeight = $(".menu-height").outerHeight() || 54;
-            var navHeight = $(".merged-country-nav").outerHeight() || 0;
-            var fixedNavTop = window.innerWidth <= 1199 ? 54 : menuHeight;
-            var targetTop = $targetGroup.offset().top - fixedNavTop - navHeight - 8;
+          /* ========================================
+         點選國家後自動定位
+      ======================================== */
 
-            $("html, body").stop().animate({ scrollTop: targetTop }, 400);
+          var $targetGroup = $('.merged-country-group[data-country-group="' + country + '"]');
+
+          if ($targetGroup.length) {
+            /*
+             * 等篩選完成後再計算位置
+             * 避免 Sticky / 隱藏區塊造成 offset 錯誤
+             */
+            setTimeout(function () {
+              var menuHeight = $(".menu-height").outerHeight() || 54;
+
+              var navHeight = $(".merged-country-nav").outerHeight() || 0;
+
+              var scrollTop = $(window).scrollTop();
+
+              /*
+               * 國家導覽列在手機 / 平板：
+               * top = 54px
+               *
+               * 桌機：
+               * top = 主選單高度
+               */
+              var fixedNavTop = window.innerWidth <= 1199 ? 54 : menuHeight;
+
+              /*
+               * 導覽列底部位置
+               */
+              var navBottom = fixedNavTop + navHeight;
+
+              /*
+               * 標題上方保留 12px 空間
+               *
+               * 注意：
+               * 這裡只扣一次 navHeight，
+               * 不再把 navHeight 重複扣除。
+               */
+              var targetTop = $targetGroup.offset().top - navBottom - 12;
+
+              /*
+               * 避免算出負值
+               */
+              targetTop = Math.max(0, targetTop);
+
+              $("html, body").stop().animate(
+                {
+                  scrollTop: targetTop,
+                },
+                400,
+              );
+            }, 30);
           }
 
+          /* 手機選單關閉 */
           if ($(this).hasClass("mobile-country-filter") || $(this).closest(".mobile-menu").length) {
             $("body").removeClass("mobile-menu-open");
+
             $(".mobile-menu").removeClass("open active");
+
             $(".mobile-menu-toggle").removeClass("active");
           }
         });
 
-        /* 手機選單變更 */
+        /* ========================================
+     手機 Select 國家變更
+  ======================================== */
         $(document).on("change", "select.mobile-country-filter", function () {
           var country = $(this).val();
+
           if (!country) return;
 
           currentCountry = country;
           window.__mergedCurrentCountry = currentCountry;
 
-          $(".country-tab").removeClass("active").attr("aria-selected", "false");
-          $('.country-tab[data-country-filter="' + country + '"], .country-tab[data-country="' + country + '"]')
-            .addClass("active")
-            .attr("aria-selected", "true");
+          setCountryActive(country);
 
           updateMergedFilters();
         });
 
-        /* 優惠按鈕切換 */
+        /* ========================================
+     優惠按鈕切換
+  ======================================== */
         $(document).on("click", ".offer-filter", function () {
           var offer = $(this).attr("data-offer-filter");
+
           if (!offer) return;
 
           currentOffer = offer;
 
           $(".offer-filter").removeClass("active");
+
           $(this).addClass("active");
 
           updateMergedFilters();
         });
 
+        /* ========================================
+     初始狀態
+     一開始一定是「全部國家」
+  ======================================== */
+
+        currentCountry = "all";
+        window.__mergedCurrentCountry = "all";
+
+        setCountryActive("all");
         updateMergedFilters();
       })();
 
-      /* 國家導覽列 Sticky｜≤1199px 固定於主選單下方 */
+      /* ========================================
+   國家導覽列 Sticky
+   ≤1199px：固定在主選單下方
+======================================== */
       (function () {
         "use strict";
 
@@ -1256,22 +1338,33 @@
           return window.innerWidth <= 1199;
         }
 
+        /* ========================================
+     計算原始位置
+  ======================================== */
         function calculatePosition() {
+          /*
+           * 先取消 Sticky
+           */
+          removeSticky();
+
           navHeight = $nav.outerHeight() || 0;
+
           var $menu = $(".menu-height");
+
           var menuHeight = $menu.length ? $menu.outerHeight() || 0 : 54;
 
-          /* 以原始位置判斷何時開始吸附 */
+          /*
+           * 導覽列原始位置
+           */
           originalTop = $nav.offset().top - menuHeight;
-
-          if ($spacer.length) {
-            $spacer.height(0);
-            $spacer.removeClass("is-sticky");
-          }
         }
 
+        /* ========================================
+     Sticky
+  ======================================== */
         function setSticky() {
           navHeight = $nav.outerHeight() || 0;
+
           $nav.addClass("is-sticky");
 
           $nav.css({
@@ -1284,15 +1377,19 @@
             "border-radius": "0px",
           });
 
+          /*
+           * 補回原本導覽列高度
+           */
           if ($spacer.length) {
-            $spacer.height(navHeight);
-            $spacer.addClass("is-sticky");
+            $spacer.height(navHeight).addClass("is-sticky");
           }
         }
 
+        /* ========================================
+     取消 Sticky
+  ======================================== */
         function removeSticky() {
-          $nav.removeClass("is-sticky");
-          $nav.css({
+          $nav.removeClass("is-sticky").css({
             position: "",
             top: "",
             left: "",
@@ -1303,51 +1400,66 @@
           });
 
           if ($spacer.length) {
-            $spacer.height(0);
-            $spacer.removeClass("is-sticky");
+            $spacer.height(0).removeClass("is-sticky");
           }
         }
 
+        /* ========================================
+     更新 Sticky 狀態
+  ======================================== */
         function updateCountryNav() {
           if (!$nav.length) return;
 
           var scrollTop = $(window).scrollTop();
 
-          /* ≤1199：捲到國家導覽列位置後，固定於 54px */
+          /* ======================================
+       ≤1199px
+    ====================================== */
           if (isSmallScreen()) {
             if (scrollTop >= originalTop) {
               setSticky();
             } else {
               removeSticky();
             }
+
             return;
           }
 
-          /* ≥1200：同樣固定於主選單下方 */
+          /* ======================================
+       ≥1200px
+    ====================================== */
+
           var menuHeight = $(".menu-height").outerHeight() || stickyOffset;
+
           if (scrollTop >= originalTop) {
+            navHeight = $nav.outerHeight() || 0;
+
             $nav.addClass("is-sticky").css({
               position: "fixed",
               top: menuHeight + "px",
               left: "0px",
+              right: "0px",
               width: "100%",
               zIndex: 9998,
               "border-radius": "0px",
             });
 
             if ($spacer.length) {
-              $spacer.height(navHeight);
-              $spacer.addClass("is-sticky");
+              $spacer.height(navHeight).addClass("is-sticky");
             }
           } else {
             removeSticky();
           }
         }
 
+        /* ========================================
+     重新計算
+  ======================================== */
         function refreshCountryNav() {
-          /* 先解除固定，才能取得正確原始位置 */
           removeSticky();
+
           calculatePosition();
+
           updateCountryNav();
         }
 
@@ -1357,6 +1469,7 @@
 
         $(window).on("resize", function () {
           clearTimeout(window.__countryNavResizeTimer);
+
           window.__countryNavResizeTimer = setTimeout(refreshCountryNav, 80);
         });
 
@@ -1367,23 +1480,42 @@
         setTimeout(refreshCountryNav, 300);
       })();
 
-      /* Scroll Spy */
+      /* ========================================
+   Scroll Spy
+======================================== */
       (function () {
         "use strict";
 
         function updateScrollSpy() {
-          if (window.__mergedCurrentCountry !== "all") return;
+          /*
+           * 非「全部國家」時，
+           * 完全不要讓 Scroll Spy 改按鈕。
+           */
+          if (window.__mergedCurrentCountry !== "all") {
+            return;
+          }
 
           var scrollTop = $(window).scrollTop();
+
           var menuHeight = $(".menu-height").outerHeight() || 0;
+
           var navHeight = $(".merged-country-nav").outerHeight() || 0;
-          var offsetTop = scrollTop + menuHeight + navHeight + 20;
+
+          /*
+           * 導覽列底部位置
+           */
+          var fixedTop = window.innerWidth <= 1199 ? 54 : menuHeight;
+
+          var offsetTop = scrollTop + fixedTop + navHeight + 20;
 
           var currentGroup = null;
 
           $(".merged-country-group[data-country-group]").each(function () {
             var $group = $(this);
-            if ($group.hasClass("is-hidden")) return;
+
+            if ($group.hasClass("is-hidden")) {
+              return;
+            }
 
             var groupTop = $group.offset().top;
 
@@ -1392,9 +1524,17 @@
             }
           });
 
+          /*
+           * 只有真的滾到某個國家區塊後，
+           * 才切換按鈕。
+           *
+           * 如果還沒進入第一個區塊，
+           * 保持「全部國家」。
+           */
           if (currentGroup) {
             $(".country-tab").removeClass("active").attr("aria-selected", "false");
-            $('.country-tab[data-country-filter="' + currentGroup + '"], .country-tab[data-country="' + currentGroup + '"]')
+
+            $('.country-tab[data-country-filter="' + currentGroup + '"],' + '.country-tab[data-country="' + currentGroup + '"]')
               .addClass("active")
               .attr("aria-selected", "true");
           }
@@ -1405,20 +1545,39 @@
         });
 
         $(window).on("resize", updateScrollSpy);
+
+        /*
+         * 載入時不要立即把 ALL 改掉
+         */
         $(window).on("load", function () {
-          setTimeout(updateScrollSpy, 300);
+          setTimeout(function () {
+            if (window.__mergedCurrentCountry === "all") {
+              /*
+               * 初始強制維持全部國家
+               */
+              $(".country-tab").removeClass("active").attr("aria-selected", "false");
+
+              $('.country-tab[data-country-filter="all"],' + '.country-tab[data-country="all"]')
+                .addClass("active")
+                .attr("aria-selected", "true");
+            }
+          }, 300);
         });
       })();
 
-      /* GoTop */
+      /* ========================================
+   GoTop
+======================================== */
       (function () {
         "use strict";
 
         var $goTop = $("#goTop");
+
         if (!$goTop.length) return;
 
         function checkGoTop() {
           var scrollTop = $(window).scrollTop();
+
           var windowHeight = $(window).height();
 
           if (scrollTop > windowHeight) {
@@ -1429,38 +1588,55 @@
         }
 
         $(window).on("scroll", checkGoTop);
+
         $goTop.on("click", function (e) {
           e.preventDefault();
-          $("html, body").stop().animate({ scrollTop: 0 }, 500);
+
+          $("html, body").stop().animate(
+            {
+              scrollTop: 0,
+            },
+            500,
+          );
         });
 
         checkGoTop();
       })();
 
-      /* 手機漢堡選單 */
+      /* ========================================
+   手機漢堡選單
+======================================== */
       (function () {
         "use strict";
 
         $(document).on("click", ".mobile-menu-toggle", function (e) {
           e.preventDefault();
+
           $("body").toggleClass("mobile-menu-open");
+
           $(".mobile-menu").toggleClass("open active");
+
           $(this).toggleClass("active");
         });
 
         $(document).on("click", ".mobile-main-item", function (e) {
           var $this = $(this);
+
           var $parent = $this.closest(".mobile-has-more");
+
           if (!$parent.length) return;
 
           e.preventDefault();
+
           $parent.toggleClass("open active");
+
           updateMobileArrow();
         });
 
         function updateMobileArrow() {
           $(".mobile-has-more").each(function () {
             var $item = $(this);
+
             var $arrow = $item.find(".mobile-arrow i");
 
             if ($item.hasClass("open") || $item.hasClass("active")) {
@@ -1474,15 +1650,20 @@
         $(document).on("click", ".mobile-has-more > .mobile-arrow", function (e) {
           e.preventDefault();
           e.stopPropagation();
+
           var $parent = $(this).closest(".mobile-has-more");
+
           $parent.toggleClass("open active");
+
           updateMobileArrow();
         });
 
         updateMobileArrow();
       })();
 
-      /* 出發日期截斷 */
+      /* ========================================
+   出發日期截斷
+======================================== */
       (function () {
         "use strict";
 
@@ -1493,10 +1674,12 @@
         function limitTravelDateText() {
           $(".travel-date-xl p").each(function () {
             var $el = $(this);
+
             var originalText = $el.attr("data-original-text");
 
             if (!originalText) {
               originalText = $.trim($el.text());
+
               $el.attr("data-original-text", originalText);
             }
 
@@ -1512,18 +1695,22 @@
 
             if (originalText.length > maxLength) {
               $el.text(originalText.substring(0, maxLength) + "...");
+
               $el.attr("title", originalText);
             } else {
               $el.text(originalText);
+
               $el.removeAttr("title");
             }
           });
         }
 
         limitTravelDateText();
+
         $(window).on("load", function () {
           setTimeout(limitTravelDateText, 100);
         });
+
         $(window).on("resize", limitTravelDateText);
       })();
     </script>
