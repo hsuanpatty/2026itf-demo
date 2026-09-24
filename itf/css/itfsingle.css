@@ -1540,7 +1540,7 @@ nav {
 .merged-sidebar h3 {
   font-size: 20px;
   margin: 0 0 12px;
-  font-weight: 800;
+  font-weight: 700;
   color: #ffffff;
   background: linear-gradient(
     135deg,
@@ -1550,6 +1550,7 @@ nav {
   padding: 12px 16px;
   border-radius: 10px 10px 0 0;
   text-align: center;
+  letter-spacing: 0.1rem;
 }
 
 .merged-sidebar-hint {
@@ -1668,6 +1669,11 @@ nav {
 
 }
 
+
+/* ========================================
+   未選取狀態｜背景圖片
+======================================== */
+
 .offer-filter[data-offer-filter="all"] {
 
   background-image: url("../images/button-1.png");
@@ -1691,6 +1697,11 @@ nav {
   background-image: url("../images/button-4.png");
 
 }
+
+
+/* ========================================
+   主標題顏色
+======================================== */
 
 .offer-filter[data-offer-filter="all"] strong {
 
@@ -1722,33 +1733,64 @@ nav {
 ======================================== */
 
 .offer-filter[data-offer-filter="all"] small {
+
   color: #2859a5;
+
 }
 
 .offer-filter[data-offer-filter="limited"] small {
+
   color: #c65f18;
+
 }
 
 .offer-filter[data-offer-filter="second"] small {
+
   color: #3f8247;
+
 }
 
 .offer-filter[data-offer-filter="upgrade"] small {
+
   color: #c13f5d;
+
 }
 
 
-/* Hover */
+/* ========================================
+   Hover
+======================================== */
+
 .offer-filter:hover {
+
   transform: translateY(-2px);
+
   filter: brightness(1.02);
+
   box-shadow: none;
+
 }
+
+
+/* ========================================
+   RWD
+======================================== */
 
 @media (max-width: 1199.98px) {
+
   .offer-filter strong {
+
     font-size: 16px;
+
   }
+
+  .offer-filter small {
+    font-size: 14px;
+  }
+
+}
+
+@media (max-width: 1024.98px) {
 
   .offer-filter small {
     font-size: 13px;
@@ -1756,26 +1798,45 @@ nav {
 }
 
 
+
 /* ========================================
    Active：全部優惠｜藍色
+   點擊後更換 button-1-active.png
 ======================================== */
+
 .offer-filter[data-offer-filter="all"].active {
+
   z-index: 3;
+
   transform: scale(1.03);
-   background-color: rgba(35, 74, 245, 0.13);
-  box-shadow: 0 0 0 0 rgba(37, 162, 235, 0), 0 3px 11px rgb(36 100 171 / 34%);
+
+  background-image: url("../images/button-1-2.png");
+
+  background-color: rgba(35, 74, 245, 0.13);
+
+  box-shadow:
+    0 0 0 0 rgba(37, 162, 235, 0),
+    0 3px 11px rgb(36 100 171 / 34%);
 
   backdrop-filter: none;
+
   -webkit-backdrop-filter: none;
+
 }
 
 
 /* ========================================
    Active：限量促銷｜橘色
+   點擊後更換 button-2-active.png
 ======================================== */
+
 .offer-filter[data-offer-filter="limited"].active {
+
   z-index: 3;
+
   transform: scale(1.03);
+
+  background-image: url("../images/button-2-2.png");
 
   background-color: rgba(245, 166, 35, 0.13);
 
@@ -1784,16 +1845,24 @@ nav {
     0 3px 11px rgba(198, 95, 24, 0.24);
 
   backdrop-filter: none;
+
   -webkit-backdrop-filter: none;
+
 }
 
 
 /* ========================================
    Active：限定團體｜綠色
+   點擊後更換 button-3-active.png
 ======================================== */
+
 .offer-filter[data-offer-filter="second"].active {
+
   z-index: 3;
+
   transform: scale(1.03);
+
+  background-image: url("../images/button-3-2.png");
 
   background-color: rgba(76, 175, 125, 0.13);
 
@@ -1802,16 +1871,24 @@ nav {
     0 3px 11px rgba(63, 130, 71, 0.23);
 
   backdrop-filter: none;
+
   -webkit-backdrop-filter: none;
+
 }
 
 
 /* ========================================
    Active：好評團體｜玫瑰粉
+   點擊後更換 button-4-active.png
 ======================================== */
+
 .offer-filter[data-offer-filter="upgrade"].active {
+
   z-index: 3;
+
   transform: scale(1.03);
+
+  background-image: url("../images/button-4-2.png");
 
   background-color: rgba(224, 105, 135, 0.13);
 
@@ -1820,77 +1897,124 @@ nav {
     0 3px 11px rgba(193, 63, 93, 0.23);
 
   backdrop-filter: none;
+
   -webkit-backdrop-filter: none;
+
 }
 
 
 /* ========================================
    Active 勾勾
 ======================================== */
+
 .offer-filter.active::before {
+
   content: none;
+
 }
 
 .offer-filter.active::after {
+
   content: "✓";
 
   position: absolute;
+
   top: 15px;
+
   right: 10px;
 
   width: 24px;
+
   height: 24px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border-radius: 50%;
 
   color: #fff;
+
   font-size: 14px;
+
   font-weight: 800;
+
   line-height: 1;
 
   pointer-events: none;
 
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+
 }
 
 
-/* 全部優惠 ✓ */
+/* ========================================
+   全部優惠 ✓
+======================================== */
+
 .offer-filter[data-offer-filter="all"].active::after {
+
   background: #2859a5;
+
 }
 
 
-/* 限量促銷 ✓ */
+/* ========================================
+   限量促銷 ✓
+======================================== */
+
 .offer-filter[data-offer-filter="limited"].active::after {
+
   background: #c65f18;
+
 }
 
 
-/* 限定團體 ✓ */
+/* ========================================
+   限定團體 ✓
+======================================== */
+
 .offer-filter[data-offer-filter="second"].active::after {
+
   background: #3f8247;
+
 }
 
 
-/* 好評團體 ✓ */
+/* ========================================
+   好評團體 ✓
+======================================== */
+
 .offer-filter[data-offer-filter="upgrade"].active::after {
+
   background: #c13f5d;
+
 }
 
 
 /* ========================================
    未選取狀態
 ======================================== */
+
 .offer-filter:not(.active) {
+
   opacity: 0.82;
+
 }
 
 .offer-filter:not(.active):hover {
   opacity: 1;
+}
+
+@media (max-width: 991.98px) {
+
+  .offer-filter.active::after {
+    top: 8px;
+    right: 6px;
+  }
+
 }
 
 @media (max-width: 767.98px) {
@@ -1902,21 +2026,28 @@ nav {
   }
 
   .offer-filter.active::after {
-
-    top: 5px;
-
-    right: 5px;
-
-    width: 21px;
-
-    height: 21px;
-
-    font-size: 12px;
-
+    top: 18px;
+    right: 12px;
   }
 
 }
 
+
+@media (max-width: 575.98px) {
+  .offer-filter.active::after {
+    top: 6px;
+    right: 9px;
+  }
+
+}
+
+@media (max-width: 370.98px) {
+  .offer-filter.active::after {
+    top: 11px;
+    right: 12px;
+  }
+
+}
 
 /* ========================================
    行程內容
@@ -1939,17 +2070,13 @@ nav {
 }
 
 .merged-content-title {
-
   display: flex;
-
   align-items: baseline;
-
   justify-content: space-between;
-
   gap: 15px;
-
   margin: 0 0 20px;
 
+  flex-wrap: wrap;
 }
 
 .merged-content-title h1 {
@@ -1968,7 +2095,7 @@ nav {
 
   color: #64748b;
 
-  font-size: 14px;
+  font-size: 15px;
 
   font-weight: 600;
 
@@ -2165,11 +2292,6 @@ nav {
   .list-price-sm {
     display: none;
   }
-
-  .mobile-menu-toggle {
-    display: none ;
-  }
-
 }
 
 
@@ -2484,10 +2606,6 @@ nav {
     display: block;
   }
 
-  .label-pt {
-    padding: 5px 0 20px;
-  }
-
   .nav-column ul li {
     margin: 4px 2px 0 0;
   }
@@ -2666,11 +2784,6 @@ nav {
     transition: all 0.25s ease;
   }
 
-  /* 展開後顯示 X */
-  .mobile-has-more.active .mobile-arrow i {
-    transform: rotate(45deg);
-  }
-
   .mobile-has-more.active .mobile-arrow i::after {
     opacity: 0;
   }
@@ -2730,6 +2843,27 @@ nav {
   .category-content #select-category {
     display: none;
   }
+
+  .merged-country-nav {
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 9998 ;
+  }
+
+  .merged-country-nav.is-sticky {
+    position: fixed ;
+    top: 54px ;
+    left: 0 ;
+    right: 0 ;
+    width: 100% ;
+    margin: 0 ;
+    border-radius: 0 ;
+    z-index: 9998 ;
+  }
+
+  .merged-country-nav-spacer.is-sticky {
+    display: block ;
+  }
 }
 
 
@@ -2738,12 +2872,6 @@ nav {
 ======================================== */
 
 @media (max-width: 991.98px) {
-
-  /* 手機版：國家分類功能移到 NAV 漢堡選單 */
-  .merged-country-nav,
-  .merged-country-nav-spacer {
-    display: none !important;
-  }
 
   .itf-box-px {
     padding: 0 10px;
@@ -2945,6 +3073,7 @@ nav {
   .merged-country-nav .country-tab {
     padding: 9px 17px;
   }
+
 }
 
 
@@ -3127,6 +3256,113 @@ nav {
     line-clamp: 2;
   }
 
+  
+   /* 手機 NAV */
+
+  .menu-nav {
+    min-height: 50px;
+    padding: 6px 10px;
+  }
+
+  .menu-nav .logo {
+    height: 38px;
+  }
+
+  .menu-nav .logo-w {
+    width: 65%;
+    max-width: 170px;
+  }
+
+  .mobile-menu-toggle {
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+  }
+
+  .mobile-menu-toggle span {
+    width: 25px;
+    height: 3px;
+  }
+
+  .mobile-main-item {
+    padding: 14px 15px;
+    font-size: 18px;
+  }
+
+  .mobile-child-categories li a {
+    padding: 15px 15px 15px 32px;
+    font-size: 16px;
+  }
+
+  .merged-sidebar {
+    padding: 10px;
+  }
+
+
+
+  /* ========================================
+     ★ 平板類列
+  ======================================== */
+
+  .merged-country-nav {
+    top: 50px;
+
+    gap: 6px;
+
+    padding:
+      7px 8px 9px;
+
+    margin-bottom: 12px;
+  }
+
+  .merged-country-nav .country-tab {
+    font-size: 13px;
+
+    padding:
+      7px 14px;
+
+    min-height: 38px;
+  }
+
+   .mobile-menu-toggle {
+    display: none ;
+  }
+
+
+  .mobile-menu-toggle {
+    display: block;
+    margin: 0 0 15px;
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 22px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .mobile-menu-toggle i {
+    margin-right: 8px;
+  }
+
+  .mobile-menu-toggle.active {
+    border-radius: 12px 12px 0 0;
+    margin-bottom: 0;
+  }
+
+  .merged-offer-filters {
+    padding: 0 5px 10px;
+  }
+
+  /* 國家分類功能移到 NAV 漢堡選單 */
+  .merged-country-nav,
+  .merged-country-nav-spacer {
+    display: none !important;
+  }
+  
 
   /* Footer */
 
@@ -3430,11 +3666,16 @@ nav {
   }
 
   .merged-sidebar h3 {
-    font-size: 18px;
+    font-size: 21px;
+    letter-spacing: 0.1rem;
+    font-weight: 500;
+    padding: 10px 16px;
   }
 
   .merged-sidebar-hint {
     margin-bottom: 10px;
+    font-size: 14px;
+    letter-spacing: 0.05rem;
   }
 
   .merged-offer-filters {
@@ -3455,11 +3696,11 @@ nav {
   }
 
   .offer-filter strong {
-    font-size: 14px;
+    font-size: 20px;
   }
 
   .offer-filter small {
-    font-size: 11px;
+    font-size: 16px;
   }
 
   .offer-filter::after {
@@ -3471,7 +3712,7 @@ nav {
   }
 
   .merged-result-count {
-    font-size: 12px;
+    font-size: 15px;
   }
 
   .merged-country-title h2 {
@@ -3526,16 +3767,20 @@ nav {
   }
 
   .label-area p {
-    font-size: 18px;
+    font-size: 20px;
     padding: 4px 12px;
     margin: 10px 0;
     border-radius: 8px;
   }
 
+  .tour-brand {
+    font-size: 13px;
+  }
+
   .travel-title {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
-    line-height: 21px;
+    line-height: 26px;
     padding-right: 0;
   }
 
@@ -3551,34 +3796,9 @@ nav {
     gap: 8px 4px;
   }
 
-   .mobile-menu-toggle {
-    display: block;
-    width: 100%;
-    padding: 14px 18px;
-    margin: 0 0 15px;
-    color: var(--white);
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 800;
-    line-height: 22px;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.25s ease;
-  }
-
-  .mobile-menu-toggle i {
-    margin-right: 8px;
-  }
-
-  .mobile-menu-toggle.active {
-    border-radius: 12px 12px 0 0;
-    margin-bottom: 0;
-  }
-
 
   .chosen-box li {
-    padding: 5px 0 20px;
+    padding: 5px 0 30px;
     margin-bottom: 4px;
   }
 
@@ -3602,7 +3822,7 @@ nav {
   }
 
   .travel-date p {
-    font-size: 13px;
+    font-size: 16px;
     line-height: 18px;
   }
 
@@ -3610,8 +3830,8 @@ nav {
   .list-price-md {
     left: auto;
     right: 0;
-    bottom: -20px;
-    font-size: 24px;
+    bottom: -28px;
+    font-size: 26px;
     line-height: 32px;
     text-align: right;
     box-sizing: border-box;
@@ -3635,7 +3855,7 @@ nav {
   }
 
   .discount h4 {
-    font-size: 12px;
+    font-size: 15px;
     line-height: 17px;
     letter-spacing: 0;
     padding-right: 0;
@@ -3652,70 +3872,39 @@ nav {
     margin-bottom: 0;
   } 
 
-
-  /* 手機 NAV */
-
-  .menu-nav {
-    min-height: 50px;
-    padding: 6px 10px;
+  .merged-offer-filters {
+    padding: 0 5px;
   }
 
-  .menu-nav .logo {
-    height: 38px;
-  }
-
-  .menu-nav .logo-w {
-    width: 65%;
-    max-width: 170px;
-  }
-
-  .mobile-menu-toggle {
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    padding: 6px;
-  }
-
-  .mobile-menu-toggle span {
-    width: 25px;
-    height: 3px;
-  }
-
-  .mobile-main-item {
-    padding: 14px 15px;
-    font-size: 18px;
-  }
-
-  .mobile-child-categories li a {
-    padding: 15px 15px 15px 32px;
+  .offer-filter strong {
     font-size: 16px;
   }
 
-
-  /* ========================================
-     ★ 小手機分類列
-  ======================================== */
-
-  .merged-country-nav {
-    top: 50px;
-
-    gap: 6px;
-
-    padding:
-      7px 8px 9px;
-
-    margin-bottom: 12px;
-  }
-
-  .merged-country-nav .country-tab {
-    font-size: 13px;
-
-    padding:
-      7px 14px;
-
-    min-height: 38px;
+  .offer-filter small {
+    font-size: 14px;
   }
 }
+
+@media (max-width: 540px) { 
+  .offer-filter strong {
+    font-size: 24px;
+  }
+
+  .offer-filter small {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 520px) { 
+  .offer-filter strong {
+    font-size: 16px;
+  }
+
+  .offer-filter small {
+    font-size: 14px;
+  }
+}
+
 
 
 /* ========================================
@@ -3750,6 +3939,15 @@ nav {
   }
 }
 
+/* ========================================
+   430 以下
+======================================== */
+
+@media (max-width: 430px) {
+  .merged-tour-content {
+    padding: 24px 30px;
+  }
+}
 
 /* ========================================
    380 以下
@@ -3768,14 +3966,22 @@ nav {
     min-width: calc((100vw - 42px) / 2);
     flex-basis: calc((100vw - 42px) / 2);
   }
+
+  .merged-tour-content {
+    padding: 24px ;
+  }
 }
 
 
-/* ========================================
-   375 以下
-======================================== */
+@media (max-width: 379.98px) {
 
-@media (max-width: 375.98px) {
+  .offer-filter small {
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+}
+
+@media (max-width: 370.98px) {
 
   .column-title {
     flex-wrap: wrap;
@@ -3792,4 +3998,38 @@ nav {
   .merged-country-nav {
     top: 50px;
   }
+
+  .offer-filter small {
+    font-size: 10px;
+    letter-spacing: 0;
+  }
+
+  .offer-filter strong {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 350.98px) {
+  .merged-offer-filters {
+    grid-template-columns: repeat(1, 1fr);
+    padding: 0 50px 10px;
+  }
+
+  .offer-filter strong {
+    font-size: 20px;
+  } 
+
+  .offer-filter small {
+    font-size: 16px;
+  }
+
+  
+}
+
+@media (max-width: 320.98px) {
+  .merged-offer-filters {
+    grid-template-columns: repeat(1, 1fr);
+    padding: 0 0 10px;
+  }
+
 }
