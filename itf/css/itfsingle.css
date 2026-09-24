@@ -1565,7 +1565,7 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 0 20px;
+  padding: 0 10px;
 }
 
 
@@ -1642,15 +1642,11 @@ nav {
 .offer-filter strong {
 
   display: block;
-
   margin: 0;
-
   font-size: 20px;
-
   font-weight: 800;
-
   line-height: 1.35;
-
+  letter-spacing: 0.1rem;
 }
 
 .offer-filter small {
